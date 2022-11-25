@@ -6,7 +6,8 @@ const model = new Schema({
   
   name: { type: String, default: "Parameter"},
   full_name: { type: String, default: ""},
-  
+  short_name: { type: String, default: "T"},
+
   type: { type: String, default: "text"}, //HTML5 any input type
 
   eu: { type: String, default: "kgf/cm2"},   //eng units
@@ -16,13 +17,8 @@ const model = new Schema({
   deadband: { type: Number, default: 0.1},
 
   fixed: { type: Number, default: 2},     //digits after dec point
-
+  readonly: { type: Boolean, default: false},     //digits after dec point
   options: { type: Number, ref: "digital_states" },  //ref
-  
-  granularity: {
-    type: String,  default: "days",
-    enum: ["secs", "mins", "hours", "days", "months", "years"],
-  },
 
 },
 {

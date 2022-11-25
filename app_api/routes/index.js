@@ -6,6 +6,8 @@ const objectController = require('../controllers/object')
 const parameterController = require('../controllers/parameter')
 const userController = require('../controllers/users')
 const valueController = require('../controllers/value')
+const chartsController = require('../controllers/charts')
+
 
 const router = express.Router()
 
@@ -57,7 +59,7 @@ router.route('/auth/login').post( authController.login );
 router.route('/auth/loginc').post( authController.loginCookies );
 router.route('/auth/logout').post( authorize_cookie, authController.logout );
 
-
+router.route('/charts').get( chartsController.chart );
 
 //------------------------------------------------
 router.route('/users')
