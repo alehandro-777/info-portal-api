@@ -60,6 +60,7 @@ router.route('/auth/loginc').post( authController.loginCookies );
 router.route('/auth/logout').post( authorize_cookie, authController.logout );
 
 router.route('/charts').get( chartsController.chart );
+router.route('/temperatures').get( chartsController.temperatures );
 
 //------------------------------------------------
 router.route('/users')

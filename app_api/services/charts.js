@@ -30,7 +30,17 @@ exports.selectOpData = async (gasday) => {
 
     return [...data, ...data1];
 }
+exports.selectTemperatures = async (gasday) => {
+    let objects = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25];
 
+    let parameters = [1,2,3];
+
+    let _begin = new SmartDate(gasday).nextGasDay().dt;
+
+    const data = await selectTemperaturesAsync(objects, parameters, _begin, _begin);
+    
+    return data;
+}
 
 
 function selectOpDataAsync(objects, parameters, begin, end) {
@@ -45,6 +55,17 @@ function selectOpDataAsync(objects, parameters, begin, end) {
     ]); 
 }
 
+function selectTemperaturesAsync(objects, parameters, begin, end) {
+
+    return Value.aggregate([
+        { $match: { object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp: { $gte: begin, $lte: end }} },
+        { $sort: { parameter: 1 } },
+        { $group: { _id: "$object", 
+            values: { $push: { "time_stamp":"$time_stamp", "state": "$state", "value": "$value", "user":"$user", "parameter":"$parameter" }  }
+        }  
+        },
+    ]); 
+}
 
 
 exports.statistics = async (gasday) => {
