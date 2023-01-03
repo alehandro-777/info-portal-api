@@ -1,6 +1,5 @@
-
 const SmartDate = require('../../smartdate');
-const Value = require('../models/value');
+const dataService = require('./data');
 
 exports.selectOpData = async (gasday) => {
     let objects = [7000001,906023,906024,906035,906026,906022,906021,903031,901033,901032,901031,902031,902032,905031,
@@ -11,12 +10,12 @@ exports.selectOpData = async (gasday) => {
         611083,611084,611085,611086,611087,611088,611089,611090,611096,6006024,611010,611011,9900297,611058,611059,
         611060,611061,611062,611063,611064];
 
-    let parameters = [52,452,63,8,904,903,67,1063,1068];
+    let parameters = [52,452,63,8,904,903,67,1063,1068, 352];
 
-    let _end = new SmartDate(gasday).nextGasDay().addDay(1).dt;
-    let _begin = new SmartDate(gasday).nextGasDay().addDay(-1).dt;
+    let to = new SmartDate(gasday).nextGasDay().addDay(1).dt;
+    let from = new SmartDate(gasday).nextGasDay().addDay(-1).dt;
 
-    const data = await selectOpDataAsync(objects, parameters, _begin, _end);
+    const data = await dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);
     
     return data;
 }
@@ -29,60 +28,31 @@ exports.selectTemperatures = async (gasday) => {
     let _begin = new Date(gasday);
     let _end = new SmartDate(gasday).addDayResetTime(7).dt;
 
-    const data = await selectTemperaturesAsync(objects, parameters, _begin, _end);
+    const data = await dataService.selectValueGroupByObjectAsync(objects, parameters, _begin, _end);
     
     return data;
 }
 
+exports.selectActGas = async (from, to) => {
+    let objects = [7000001,906023,906024,906035,906026,906022,906021,903031,901033,901032,901031,902031,902032,905031];
 
-function selectOpDataAsync(objects, parameters, begin, end) {
+    let parameters = [52,452];
 
-    return Value.aggregate([
-        { $match: { object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp: { $gte: begin, $lte: end }} },
-        { $sort: { time_stamp: -1 } },
-        { $group: { _id: {  object:"$object", parameter:"$parameter" }, 
-            values: { $push: { time_stamp:"$time_stamp", "state": "$state", "value": "$value", "user":"$user" }  }
-        }  
-        },
-    ]); 
+    const data = await dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);
+    
+    return data;
 }
 
-function selectTemperaturesAsync(objects, parameters, begin, end) {
-
-    return Value.aggregate([
-        { $match: { object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp: { $gte: begin, $lte: end }} },
-        { $sort: { time_stamp: 1 } },
-        { $group: { _id: "$object", 
-            values: { $push: { "time_stamp":"$time_stamp", "state": "$state", "value": "$value", "user":"$user", "parameter":"$parameter" }  }
-        }  
-        },
-    ]); 
-}
 
 
 exports.statistics = async (gasday) => {
     let objects = [906023, 906024, 906026];
     let parameters = [52];
 
-    let _end = new SmartDate("2030-01-01").nextGasDay().dt;
-    let _begin = new SmartDate("2010-01-01").nextGasDay().addDay(-1).dt; 
+    let from = new SmartDate("2030-01-01").nextGasDay().dt;
+    let to = new SmartDate("2010-01-01").nextGasDay().addDay(-1).dt; 
 
-    const data = await Value.aggregate([
-        { $match: { object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp: { $gte: _begin, $lte: _end }} },
-        { $sort: { time_stamp:1 } },
-        { $group: { _id: {  object:"$object", parameter:"$parameter" }, 
-                count: {$sum: 1},
-                begin: {$first: "$time_stamp"},
-                first: {$first: "$value"},
-                avg: {$avg: "$value"},
-                sum: {$sum: "$value"},
-                max: {$max: "$value"},
-                min: {$min: "$value"},
-                last: {$last: "$value"},
-                end: {$last: "$time_stamp"},
-        }  
-        },
-    ]); 
+    const data = await dataService.statistics(objects, parameters, from, to)
     
     
     return data;
@@ -92,16 +62,9 @@ exports.discreteObjects = async (gasday) => {
     let objects = [906023, 906024, 906026];
     let parameters = [777];
 
-    let _end = new SmartDate(gasday).nextGasDay().dt;
+    let to = new SmartDate(gasday).nextGasDay().dt;
 
-    const data = await Value.aggregate([
-        { $match: { object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp: { $lte: _end }} },
-        { $sort: { time_stamp: -1 } },
-        { $group: { _id: {  object:"$object", parameter:"$parameter" }, 
-            values: { $push: { time_stamp:"$time_stamp", "state": "$state", "value": "$value", "user":"$user" }  }
-        }  
-        },
-    ]); 
+    const data = await dataService.discreteObjects(objects, parameters, to);
      
     return data;
 }

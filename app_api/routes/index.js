@@ -61,6 +61,14 @@ router.route('/auth/logout').post( authorize_cookie, authController.logout );
 
 router.route('/charts').get( chartsController.chart );
 router.route('/temperatures').get( chartsController.temperatures );
+router.route('/actgas').get( chartsController.actgas );
+router.route('/excell').get( chartsController.excel );
+router.route('/csv').get( chartsController.csv );
+
+
+
+
+
 
 //------------------------------------------------
 router.route('/users')
