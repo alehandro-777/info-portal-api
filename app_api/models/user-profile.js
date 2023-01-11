@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const model = new Schema({
   _id: Number,
-  name: String,   //friendly name 
+  name: String,   //short name 
   side_menu: []   //side menu 
 },
 {

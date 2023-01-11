@@ -7,7 +7,8 @@ const parameterController = require('../controllers/parameter')
 const userController = require('../controllers/users')
 const valueController = require('../controllers/value')
 const chartsController = require('../controllers/charts')
-
+const rolesController = require('../controllers/user-roles')
+const profilesController = require('../controllers/user-profiles')
 
 const router = express.Router()
 
@@ -99,14 +100,37 @@ router.route('/parameters/:id')
   .delete( (req,res)=>parameterController.delete(req,res) );
 //------------------------------------------------
 router.route('/values')
-  .get( (req,res)=>parameterController.select(req,res) )
-  .post( (req,res)=>parameterController.create(req,res) );
+  .get( (req,res)=>valueController.select(req,res) )
+  .post( (req,res)=>valueController.create(req,res) );
 
 router.route('/values/:id')
   .get( (req,res)=>valueController.findOne(req,res) )
   .put( (req,res)=>valueController.update(req,res) )
   .delete( (req,res)=>valueController.delete(req,res) );
+//-------------------------------------------------------------------------------
+  
+router.route('/user-profiles')
+  .get( (req,res)=>profilesController.select(req,res) )
+  .post( (req,res)=>profilesController.create(req,res) );
+  
+router.route('/user-profiles/:id')
+  .get( (req,res)=>profilesController.findOne(req,res) )
+  .put( (req,res)=>profilesController.update(req,res) )
+  .delete( (req,res)=>profilesController.delete(req,res) );
 
+router.route('/user-profiles-fill-select')
+  .get( (req,res)=>profilesController.fill_select(req,res) )
 
+//------------------------------------------------------------------------------
+router.route('/user-roles')
+  .get( (req,res)=>rolesController.select(req,res) )
+  .post( (req,res)=>rolesController.create(req,res) );  
+router.route('/user-roles/:id')
+  .get( (req,res)=>rolesController.findOne(req,res) )
+  .put( (req,res)=>rolesController.update(req,res) )
+  .delete( (req,res)=>rolesController.delete(req,res) );  
+
+router.route('/user-roles-fill-select')
+  .get( (req,res)=>rolesController.fill_select(req,res) )
 
 module.exports =  router 

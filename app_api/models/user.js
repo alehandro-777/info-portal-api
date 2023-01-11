@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 
 const model = new Schema({
   _id: Number,
-  name: String,
-  login: { type: String, required: true },
-  password: String,                           //may be password hash ???
-  is_domain: { type: Boolean, required: false },   //local, domain
-  role: { type: Number, ref: "roles" },     //ref roles collection
+  name: String,         //not too ling - display on side panel
+  login: { type: String, required: true },  //corp email or local login
+  password: { type: String, default: ""  },      //if damain - empty, else local - password hash
+  is_domain: { type: Boolean, required:false, default:true },   //local, domain
+  role: { type: String, ref: "user_roles" },        
   profile: { type: Number, ref: "user_profiles" }, //ref to gui profiles
 },
 {
