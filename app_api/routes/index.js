@@ -10,6 +10,8 @@ const chartsController = require('../controllers/charts')
 const rolesController = require('../controllers/user-roles')
 const profilesController = require('../controllers/user-profiles')
 
+const passwordController = require('../controllers/password')
+
 const router = express.Router()
 
 function authorize(roles = []) {
@@ -72,6 +74,9 @@ router.route('/csv').get( chartsController.csv );
 
 
 //------------------------------------------------
+router.route('/users/:id/password').post( (req,res)=> passwordController.setUserPass(req,res) );
+
+
 router.route('/users')
   .get( (req,res)=>userController.select(req,res) )
   .post( (req,res)=>userController.create(req,res) );
