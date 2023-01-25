@@ -72,3 +72,10 @@ exports.discreteObjects = async (objects, parameters, end) => {
      
     return data;
 }
+
+exports.selectValuesFilteredByValueAsync = (objects, parameters, begin, end, valueFilter) => {
+    return Value.aggregate([
+        { $match: { object:{ $in: objects }, parameter:{ $in: parameters }, time_stamp: { $gte: begin, $lte: end }, value: valueFilter } },
+        { $sort: { time_stamp: 1 } },
+    ]);         
+}

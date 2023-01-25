@@ -11,6 +11,7 @@ const rolesController = require('../controllers/user-roles')
 const profilesController = require('../controllers/user-profiles')
 
 const passwordController = require('../controllers/password')
+const seasonController = require('../controllers/season')
 
 const router = express.Router()
 
@@ -68,7 +69,9 @@ router.route('/actgas').get( chartsController.actgas );
 router.route('/excell').get( chartsController.excel );
 router.route('/csv').get( chartsController.csv );
 
-
+router.route('/seasons').get( seasonController.find );
+router.route('/seasons/:id').get( seasonController.findById );
+router.route('/seasons/:id/stat').get( seasonController.statistics );
 
 
 
