@@ -1,5 +1,9 @@
 const Value = require('../models/value');
 
+exports.getValueAsync = (objects, parameters, time_stamp) => {
+    return Value.find({ object:{ $in:objects }, parameter:{ $in:parameters }, time_stamp }).exec();
+}
+
 exports.selectValueGroupByObjectParameterAsync = (objects, parameters, begin, end) => {
 
     return Value.aggregate([

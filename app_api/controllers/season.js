@@ -6,7 +6,7 @@ exports.find =  async (req, res) => {
     let filter = req.query.object ? {object : req.query.object} : {}
         
     try {
-        const data = await Season.find(filter).exec();
+        const data = await Season.find(filter).sort({start:1}).exec();
 
         return res.status(200).json(data);
     } 
