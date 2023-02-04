@@ -48,7 +48,7 @@ const authorize_cookie = (req, res, next) => {
   }
   try {
     const data = jwt.verify(token,  process.env.RSA_PRIVATE_KEY, { algorithms: ['RS256'] } );
-    console.log(data);
+    //console.log(data);
 
     req.userId = data.sub;
     req.userRole = data.role;
@@ -63,9 +63,12 @@ router.route('/auth/login').post( authController.login );
 router.route('/auth/loginc').post( authController.loginCookies );
 router.route('/auth/logout').post( authorize_cookie, authController.logout );
 
+router.route('/dataset/:id').get( chartsController.set );
 router.route('/charts').get( chartsController.chart );
 router.route('/temperatures').get( chartsController.temperatures );
-router.route('/actgas').get( chartsController.actgas );
+
+router.route('/actgas').get( chartsController.actgas ); //???? temp temp
+
 router.route('/excell').get( chartsController.excel );
 router.route('/csv').get( chartsController.csv );
 

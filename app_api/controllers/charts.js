@@ -137,3 +137,31 @@ exports.csv = async (req, res) => {
         return res.status(500).json({ message: error});
     }       
 }
+
+exports.set =  async (req, res) => {
+    let from = req.query.from; 
+    let to = req.query.to; 
+    let id = Number.parseInt(req.params.id);
+
+    if (Number.isNaN(id)) {
+        return res.status(400).json({ message: "Wrong id: " + id});
+    }
+    if (!from) {
+        from = new Date().toISOString();
+    }
+
+    if (!to) {
+        to = from;
+    }   
+
+    try {
+             
+        const data = await chartService.selectSetAsync(id, new Date(from), new Date(to));           
+
+        return res.status(200).json({ data });
+    } 
+    catch (error) {
+        return res.status(500).json({ message: error});
+    } 
+    
+}

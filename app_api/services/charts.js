@@ -43,7 +43,35 @@ exports.selectActGas = async (from, to) => {
     return data;
 }
 
+exports.selectSetAsync = (id, from, to) => {
+    switch (id) {
+        case 1:            
+            return set1Async(from, to);
+        case 2:            
+            return set2Async(from, to);    
+    }
 
+    throw new Error('Cant handle this id');
+}
+
+//Активний газ графики
+set1Async = (from, to) => {
+    const objects = [7000001,906023,906024,906035,906026,906022,906021,903031,901033,901032,901031,902031,902032,905031];
+    
+    const parameters = [52,452];
+
+    return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
+}
+
+// ОГТСУ режим
+set2Async = (from, to) => {
+    const objects = [6000016,6000017,6000014,6000012,906010,906020,906008,6004006,6004007,6000037,6000500,906002,903001,903002,903003,903004,3000337,
+                        3000028,903009,903010,3010041,902023,901005,901009,901016,901015,904005,905023,999220,901017,1003419,5060040];
+
+    const parameters = [9,8,10,1,2,505];
+
+    return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
+}
 
 exports.statistics = async (gasday) => {
     let objects = [906023, 906024, 906026];

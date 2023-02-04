@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Entity = require('../models/user')
+const PassWCollection = require('../models/pass');
+const ad = require('../services/active-directory');
+const crypto = require('../services/passwords');
 
 module.exports.login = function (req, res) { 
     
@@ -23,8 +26,33 @@ module.exports.login = function (req, res) {
     );
 };
 
-module.exports.loginCookies = function (req, res) { 
+module.exports.loginCookies = async function (req, res) {     
+    console.log("Try login...", req.body);
+    req.body.password = 'Esr0323--';
+
+    const usr = await Entity.findOne({ "login": req.body.username }).exec();
+/*
+    if (!usr) return res.status(401).json({ message: "User not found !"});
     
+    //local or domain user
+    if (usr.is_domain) {
+        //domain authentificaton
+        try {
+            let res = await ad.authenticateAsync(req.body.username, req.body.password);
+            //console.log(res)           
+            if (!res) return res.status(401).json({ message: "AD doesn't accept user !"});
+        } catch (error) {
+            //console.log(error)  
+            return res.status(401).json({ message: "AD doesn't accept user !", error});
+        }
+    } else {
+        //local authentification
+        const hash = await PassWCollection.findById(usr._id).exec();
+        let res = await crypto.isValidPassAsync(hash.password, req.body.password);
+        if (!res) return res.status(401).json({ message: "Password wrong !"});
+    }
+*/ 
+
     const user  = {_id:1, name:"Username 1", role:"admin"};
     
     const payload = createPayload(user);

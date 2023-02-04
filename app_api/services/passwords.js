@@ -11,7 +11,6 @@ exports.saveUserPassAsync = async (userId, textPass) => {
     await Collection.findOneAndUpdate( {_id:userId }, {_id:userId, password:hash}, {upsert: true}).exec();
 }
 
-exports.isValidPassAsync = async (userId, textPass) => {
-    let doc = await Collection.findById(userId).exec();
-    return await bcrypt.compare(textPass, doc.password);
+exports.isValidPassAsync = (hashPass, textPass) => {
+    return bcrypt.compare(textPass, hashPass);
 }
