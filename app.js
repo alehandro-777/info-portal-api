@@ -1,7 +1,7 @@
 const fs = require('fs')
 process.env.RSA_PUBLIC_KEY = fs.readFileSync('./keys/public.key');
 process.env.RSA_PRIVATE_KEY = fs.readFileSync('./keys/private.key');
-process.env.JWT_EXP_DAYS = 7;
+process.env.JWT_EXP_DAYS = 12;
 process.env.SELECT_LIMIT = 100;
 
 const express = require('express')

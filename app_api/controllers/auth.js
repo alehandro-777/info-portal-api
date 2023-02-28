@@ -60,7 +60,7 @@ module.exports.loginCookies = async function (req, res) {
     // RS256 === RS256 code =decode !!!
     const jwtBearerToken = jwt.sign(payload, process.env.RSA_PRIVATE_KEY, { algorithm: 'RS256'});
     return res.cookie("access_token", jwtBearerToken, {
-        maxAge: payload.exp,
+        maxAge: 60*60*process.env.JWT_EXP_DAYS*1000,
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
       })
@@ -78,8 +78,9 @@ module.exports.logout = function (req, res) {
 function createPayload(user) {
     const issued = new Date();
     const expiry = new Date();
-    expiry.setDate(expiry.getDate() + process.env.JWT_EXP_DAYS);   //expires in + ... days from now 
-                    
+    //add hours
+    expiry.setTime(expiry.getTime() + 60*60*process.env.JWT_EXP_DAYS*1000);   //expires in + ... days from now              
+
     const payload = {
         iat : parseInt(issued.getTime() / 1000),
         iss: "rest api",
