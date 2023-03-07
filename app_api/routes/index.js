@@ -13,6 +13,8 @@ const profilesController = require('../controllers/user-profiles')
 const passwordController = require('../controllers/password')
 const seasonController = require('../controllers/season')
 
+const nsiController = require('../controllers/nsi')
+
 const router = express.Router()
 
 function authorize(roles = []) {
@@ -143,5 +145,17 @@ router.route('/user-roles/:id')
 
 router.route('/user-roles-fill-select')
   .get( (req,res)=>rolesController.fill_select(req,res) )
+
+//------------------------------------------------
+router.route('/nsi')
+  .get( (req,res)=>nsiController.select(req,res) )
+  .post( (req,res)=>nsiController.create(req,res) );
+
+router.route('/nsi/:id')
+  .get( (req,res)=>nsiController.findOne(req,res) )
+  .put( (req,res)=>nsiController.update(req,res) )
+  .delete( (req,res)=>nsiController.delete(req,res) );
+//-------------------------------------------------------------------------------
+
 
 module.exports =  router 
