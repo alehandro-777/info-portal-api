@@ -25,8 +25,10 @@ async function create (season) {
     const objectPsg = 906021;
     const objectFxp = 999082;
     const objectPG = 9060130;
-    const vtvInject = 6090520;
-    const vtvWith = 6090411;
+    const vtvInject = 7060100;
+    const vtvWith = 7060100;
+    const sendGas = 7001302;
+    const receiveGas = 7001303;
 
     let result = {};
 
@@ -58,12 +60,12 @@ async function create (season) {
     result.p = tempData.filter(d=> d._id.object == objectFxp && d._id.parameter == 9);
 
     //bad CH calc
-    let tempDataBadCH_ym = await smartFiltersService.smartFilterGroupByObjParYearMonth([objectPsg], [901, 902], season.start, season.end, objectFxp, 13, {$gt: 0});
-    let tempDataBadCH = await smartFiltersService.smartFilterGroupByObjPar([objectPsg], [901, 902], season.start, season.end, objectFxp, 13, {$gt: 0});
+    let tempDataBadCH_ym = await smartFiltersService.smartFilterGroupByObjParYearMonth([sendGas, receiveGas], [63], season.start, season.end, objectFxp, 13, {$gt: 0});
+    let tempDataBadCH = await smartFiltersService.smartFilterGroupByObjPar([sendGas, receiveGas], [63], season.start, season.end, objectFxp, 13, {$gt: 0});
     
     //bad H2O calc
-    let tempDataBadH2O_ym = await smartFiltersService.smartFilterGroupByObjParYearMonth([objectPsg], [901, 902], season.start, season.end, objectFxp, 29, {$gt: -8});
-    let tempDataBadH2O = await smartFiltersService.smartFilterGroupByObjPar([objectPsg], [901, 902], season.start, season.end, objectFxp, 29, {$gt: -8});
+    let tempDataBadH2O_ym = await smartFiltersService.smartFilterGroupByObjParYearMonth([sendGas, receiveGas], [63], season.start, season.end, objectFxp, 29, {$gt: -8});
+    let tempDataBadH2O = await smartFiltersService.smartFilterGroupByObjPar([sendGas, receiveGas], [63], season.start, season.end, objectFxp, 29, {$gt: -8});
 
     //pal gas > 0 "Samoplyv"
     let tempDataSamoplyv_ym = await smartFiltersService.smartFilterGroupByObjParYearMonthNotIn([objectPsg, vtvInject, vtvWith], [901, 902, 63], season.start, season.end, objectPG, 30, {$gt: 0});
@@ -73,17 +75,17 @@ async function create (season) {
     let tempDataCompress_ym = await smartFiltersService.smartFilterGroupByObjParYearMonth([objectPsg, vtvInject, vtvWith], [901, 902, 63], season.start, season.end, objectPG, 30, {$gt: 0});
     let tempDataCompress = await smartFiltersService.smartFilterGroupByObjPar([objectPsg, vtvInject, vtvWith], [901, 902, 63], season.start, season.end, objectPG, 30, {$gt: 0});
 
-    result.wi_bad_ch_ym = tempDataBadCH_ym.filter(d=> d._id.object == objectPsg && d._id.parameter == 902);
-    result.wi_bad_ch = tempDataBadCH.filter(d=> d._id.object == objectPsg && d._id.parameter == 902);
+    result.wi_bad_ch_ym = tempDataBadCH_ym.filter(d=> d._id.object == sendGas && d._id.parameter == 63);
+    result.wi_bad_ch = tempDataBadCH.filter(d=> d._id.object == sendGas && d._id.parameter == 63);
 
-    result.in_bad_ch_ym = tempDataBadCH_ym.filter(d=> d._id.object == objectPsg && d._id.parameter == 901);
-    result.in_bad_ch = tempDataBadCH.filter(d=> d._id.object == objectPsg && d._id.parameter == 901);
+    result.in_bad_ch_ym = tempDataBadCH_ym.filter(d=> d._id.object == receiveGas && d._id.parameter == 63);
+    result.in_bad_ch = tempDataBadCH.filter(d=> d._id.object == receiveGas && d._id.parameter == 63);
 
-    result.wi_bad_h2o_ym = tempDataBadH2O_ym.filter(d=> d._id.object == objectPsg && d._id.parameter == 902);
-    result.wi_bad_h2o = tempDataBadH2O.filter(d=> d._id.object == objectPsg && d._id.parameter == 902);
+    result.wi_bad_h2o_ym = tempDataBadH2O_ym.filter(d=> d._id.object == sendGas && d._id.parameter == 63);
+    result.wi_bad_h2o = tempDataBadH2O.filter(d=> d._id.object == sendGas && d._id.parameter == 63);
 
-    result.in_bad_h2o_ym = tempDataBadH2O_ym.filter(d=> d._id.object == objectPsg && d._id.parameter == 901);
-    result.in_bad_h2o = tempDataBadH2O.filter(d=> d._id.object == objectPsg && d._id.parameter == 901);
+    result.in_bad_h2o_ym = tempDataBadH2O_ym.filter(d=> d._id.object == receiveGas && d._id.parameter == 63);
+    result.in_bad_h2o = tempDataBadH2O.filter(d=> d._id.object == receiveGas && d._id.parameter == 63);
 
 
     result.wi_samoplyv_ym = tempDataSamoplyv_ym.filter(d=> d._id.object == objectPsg && d._id.parameter == 902);

@@ -10,7 +10,8 @@ const kegichivkaStats = require('./seasons-stat-kegichivka');
 const soloxaStats = require('./seasons-stat-soloxa');
 const olyshivkaStats = require('./seasons-stat-olyshivka');
 const krasnopopivskeStats = require('./seasons-stat-krasnopopivske');
-
+const bvu_u_Stats = require('./seasons-stat-bvu-u');
+const bvu_b_vStats = require('./seasons-stat-bvu-bv');
 
 async function create (seasonId) {
 
@@ -61,7 +62,16 @@ async function create (seasonId) {
         result = await krasnopopivskeStats.create(season);
         return result;
     }
-
+    if (season.object == 906035) {
+        result = await bvu_b_vStats.create(season);
+        return result;
+    }
+    if (season.object == 906026) {
+        result = await bvu_u_Stats.create(season);
+        return result;
+    }
+   
+    
 
 
     return result;

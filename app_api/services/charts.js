@@ -8,13 +8,13 @@ exports.selectOpData = async (gasday) => {
         611035,611036,611054,611055,611065,611066,611067,611068,611069,611070,611043,611045,611071,611072,611073,611044,
         611046,611074,611075,611076,611077,611078,611079,611080,611047,611049,611052,611081,611082,611048,611051,611053,
         611083,611084,611085,611086,611087,611088,611089,611090,611096,6006024,611010,611011,9900297,611058,611059,
-        611060,611061,611062,611063,611064];
+        611060,611061,611062,611063,611064, 611095];
 
     let parameters = [52,452,63,8,904,903,67,1063,1068, 352];
 
     let to = new SmartDate(gasday).nextGasDay().addDay(1).dt;
     let from = new SmartDate(gasday).nextGasDay().addDay(-1).dt;
-
+//console.log(gasday, from, to)
     const data = await dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);
     
     return data;
@@ -49,6 +49,8 @@ exports.selectSetAsync = (id, from, to) => {
             return set1Async(from, to);
         case 2:            
             return set2Async(from, to);    
+        case 3:            
+            return set3Async(from, to);    
     }
 
     throw new Error('Cant handle this id');
@@ -73,6 +75,17 @@ set2Async = (from, to) => {
 
     return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
 }
+
+// Комерційна панорама
+set3Async = (from, to) => {
+    const objects = [611010,611011,611012,611013,611022,611023,611054,611055,611098,611099,611061,611059,611017,611028,611029,611031,611032,611039,611040,
+                      611020, 611021, 611033,611034,611035,611036,611102,611103,611104,611105];
+
+    const parameters = [63, 1063, 1068];
+
+    return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
+}
+
 
 exports.statistics = async (gasday) => {
     let objects = [906023, 906024, 906026];

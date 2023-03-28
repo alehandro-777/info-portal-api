@@ -3,6 +3,7 @@ const Entity = require('../models/user')
 const PassWCollection = require('../models/pass');
 const ad = require('../services/active-directory');
 const crypto = require('../services/passwords');
+const dns = require('dns');
 
 module.exports.login = function (req, res) { 
     
@@ -27,8 +28,12 @@ module.exports.login = function (req, res) {
 };
 
 module.exports.loginCookies = async function (req, res) {     
-    console.log("Try login...", req.body);
-    req.body.password = 'Esr0323--';
+
+    req.body.password = 'Esr0323--';// TEMP TEMP
+
+    dns.lookupService(req.ip, 22, (err, hostname, service) => {
+        console.log("Try login:",new Date(), req.body, "ip:", req.ip, "host:", hostname);
+    });
 
     const usr = await Entity.findOne({ "login": req.body.username }).exec();
 /*

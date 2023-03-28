@@ -33,8 +33,8 @@ app.use(function(req, res, next) {
   );
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
-  res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  //res.header("Access-Control-Allow-Origin", "http://10.3.2.36:4200");
+  //res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+  res.header("Access-Control-Allow-Origin", "http://10.3.2.36:4200");
  next();
 });
 
@@ -43,6 +43,7 @@ app.use(cookieParser());
 app.use('/api', router);
 app.use(errorHandler);  // global error handler
 
+app.set('trust proxy', true); //will return the real IP address even if behind proxy
 
 //TODO send the information to crash reporting system
 process.on('unhandledRejection', (reason, promise) => {
