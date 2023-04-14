@@ -65,18 +65,18 @@ router.route('/auth/login').post( authController.login );
 router.route('/auth/loginc').post( authController.loginCookies );
 router.route('/auth/logout').post( authorize_cookie, authController.logout );
 
-router.route('/dataset/:id').get( chartsController.set );
-router.route('/charts').get( chartsController.chart );
-router.route('/temperatures').get( chartsController.temperatures );
+router.route('/dataset/:id').get( authorize_cookie, chartsController.set );
+router.route('/charts').get( authorize_cookie, chartsController.chart );
+router.route('/temperatures').get( authorize_cookie, chartsController.temperatures );
 
-router.route('/actgas').get( chartsController.actgas ); //???? temp temp
+router.route('/actgas').get( authorize_cookie, chartsController.actgas ); //???? temp temp
 
-router.route('/excell').get( chartsController.excel );
-router.route('/csv').get( chartsController.csv );
+router.route('/excell').get( authorize_cookie, chartsController.excel );
+router.route('/csv').get( authorize_cookie, chartsController.csv );
 
-router.route('/seasons').get( seasonController.find );
-router.route('/seasons/:id').get( seasonController.findById );
-router.route('/seasons/:id/stat').get( seasonController.statistics );
+router.route('/seasons').get( authorize_cookie, seasonController.find );
+router.route('/seasons/:id').get( authorize_cookie, seasonController.findById );
+router.route('/seasons/:id/stat').get( authorize_cookie, seasonController.statistics );
 
 
 

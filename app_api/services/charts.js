@@ -51,6 +51,10 @@ exports.selectSetAsync = (id, from, to) => {
             return set2Async(from, to);    
         case 3:            
             return set3Async(from, to);    
+        case 4:            
+            return set4Async(from, to);    
+        case 5:            
+            return set5Async(from, to);    
     }
 
     throw new Error('Cant handle this id');
@@ -79,13 +83,33 @@ set2Async = (from, to) => {
 // Комерційна панорама
 set3Async = (from, to) => {
     const objects = [611010,611011,611012,611013,611022,611023,611054,611055,611098,611099,611061,611059,611017,611028,611029,611031,611032,611039,611040,
-                      611020, 611021, 611033,611034,611035,611036,611102,611103,611104,611105];
+                      611020, 611021, 611033,611034,611035,611036,611102,611103,611104,611105,611106, 9900320, 9900321];
 
     const parameters = [63, 1063, 1068];
 
     return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
 }
 
+// Споживання
+set4Async = (from, to) => {
+    const objects = [9900401,9900402,9900403,9900404,9900405];
+
+    const parameters = [8];
+
+    return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
+}
+
+// ВТВ
+set5Async = (from, to) => {
+    const objects = [6006004,6006006,6006005,6102133,6102132,6000081,6103133,6103132,6103113,6102002,6102022,6000082,6102023,6103013,6103032,6103012,6103033,7050111,
+        7050112,7050113,7050114,7050121,7050122,7050123,7050124,7060111,7060112,7060114,7060113,7060121,7060122,6090504,7060123,7040102,7040103,7040101,7040102,7040103,
+        7040101,1093031,1093032,1093141,1093142,1093143,1091091,1091092,1091093,1091132,1091131,1091133,1100431,1100432,1000469,1100331,1100332,1100333,2110242,2110310,
+        2110431,2110570,2110501,2110450,  16006004,16102133,16102002,17050111,17060111,17040102,11093031,11091091,11100431,12110242,12110431,12110501];
+
+    const parameters = [63];
+
+    return dataService.selectValueGroupByObjectParameterAsync(objects, parameters, from, to);    
+}
 
 exports.statistics = async (gasday) => {
     let objects = [906023, 906024, 906026];
