@@ -27,40 +27,52 @@ module.exports.login = function (req, res) {
     );
 };
 
-module.exports.loginCookies = async function (req, res) {     
+module.exports.whoami = async function (req, res) {
+    //init whoami request (userId set by middleware)
+    if (req.userId) {
+        const active_user  = await Entity.findOne({ "_id": req.userId }).exec();
+        if (!active_user) return res.status(401).json({ message: "User not found !"});
+        return res.status(200).json(active_user);    
+    } else
+    {
+        return res.status(400).json({ message: "req userId == null"});
+    }
+}
 
-    req.body.password = 'Esr0323--';// TEMP TEMP
+module.exports.loginCookies = async function (req, res) {     
 
     dns.lookupService(req.ip, 22, (err, hostname, service) => {
         console.log("Try login:",new Date(), req.body, "ip:", req.ip, "host:", hostname);
     });
 
     const usr = await Entity.findOne({ "login": req.body.username }).exec();
-/*
-    if (!usr) return res.status(401).json({ message: "User not found !"});
+
+    if (!usr) return res.status(403).json({ message: "User not found in portal DB!"});
     
+    console.log(usr)
+
     //local or domain user
     if (usr.is_domain) {
         //domain authentificaton
         try {
             let res = await ad.authenticateAsync(req.body.username, req.body.password);
             //console.log(res)           
-            if (!res) return res.status(401).json({ message: "AD doesn't accept user !"});
+            if (!res) return res.status(403).json({ message: "Error AD authentification!"});
         } catch (error) {
-            //console.log(error)  
-            return res.status(401).json({ message: "AD doesn't accept user !", error});
+            console.log(error)  
+            return res.status(403).json({ message: "Error AD authentification!", error});
         }
     } else {
         //local authentification
+        console.log("Local authentification start")
         const hash = await PassWCollection.findById(usr._id).exec();
         let res = await crypto.isValidPassAsync(hash.password, req.body.password);
-        if (!res) return res.status(401).json({ message: "Password wrong !"});
+        if (!res) return res.status(403).json({ message: "Wrong Password!"});
     }
-*/ 
+ 
 
-    const user  = {_id:1, name:"Username 1", role:"admin"};
     
-    const payload = createPayload(user);
+    const payload = createPayload(usr);
 
     // RS256 === RS256 code =decode !!!
     const jwtBearerToken = jwt.sign(payload, process.env.RSA_PRIVATE_KEY, { algorithm: 'RS256'});
@@ -70,7 +82,7 @@ module.exports.loginCookies = async function (req, res) {
         secure: process.env.NODE_ENV === "production",
       })
       .status(200)
-      .json(user);
+      .json(usr);
 }
 
 module.exports.logout = function (req, res) {

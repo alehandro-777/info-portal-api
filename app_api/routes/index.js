@@ -61,22 +61,24 @@ const authorize_cookie = (req, res, next) => {
   }
 };
 
-router.route('/auth/login').post( authController.login );
+router.route('/auth/whoami').get( authorize_cookie, authController.whoami );
+//router.route('/auth/login').post( authController.login );
 router.route('/auth/loginc').post( authController.loginCookies );
-router.route('/auth/logout').post( authorize_cookie, authController.logout );
+router.route('/auth/logout').post( authController.logout );
 
-router.route('/dataset/:id').get( authorize_cookie, chartsController.set );
-router.route('/charts').get( authorize_cookie, chartsController.chart );
-router.route('/temperatures').get( authorize_cookie, chartsController.temperatures );
+router.route('/dataset/:id').get(authorize_cookie, chartsController.set );
+router.route('/charts').get(authorize_cookie, chartsController.chart );
+router.route('/temperatures').get(authorize_cookie, chartsController.temperatures );
+router.route('/table').get( authorize_cookie, chartsController.table );
 
-router.route('/actgas').get( authorize_cookie, chartsController.actgas ); //???? temp temp
+router.route('/actgas').get(authorize_cookie, chartsController.actgas ); //???? temp temp
 
-router.route('/excell').get( authorize_cookie, chartsController.excel );
-router.route('/csv').get( authorize_cookie, chartsController.csv );
+router.route('/excell').get(authorize_cookie, chartsController.excel );
+router.route('/csv').get(authorize_cookie, chartsController.csv );
 
-router.route('/seasons').get( authorize_cookie, seasonController.find );
-router.route('/seasons/:id').get( authorize_cookie, seasonController.findById );
-router.route('/seasons/:id/stat').get( authorize_cookie, seasonController.statistics );
+router.route('/seasons').get(authorize_cookie, seasonController.find );
+router.route('/seasons/:id').get(authorize_cookie, seasonController.findById );
+router.route('/seasons/:id/stat').get(authorize_cookie, seasonController.statistics );
 
 
 
@@ -86,75 +88,75 @@ router.route('/users/:id/password').post( (req,res)=> passwordController.setUser
 
 
 router.route('/users')
-  .get( (req,res)=>userController.select(req,res) )
-  .post( (req,res)=>userController.create(req,res) );
+  .get(authorize_cookie, (req,res)=>userController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>userController.create(req,res) );
 
 router.route('/users/:id')
-  .get( (req,res)=>userController.findOne(req,res) )
-  .put( (req,res)=>userController.update(req,res) )
-  .delete( (req,res)=>userController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>userController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>userController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>userController.delete(req,res) );
 //------------------------------------------------
 router.route('/objects')
-  .get( (req,res)=>objectController.select(req,res) )
-  .post( (req,res)=>objectController.create(req,res) );
+  .get(authorize_cookie, (req,res)=>objectController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>objectController.create(req,res) );
 
 router.route('/objects/:id')
-  .get( (req,res)=>objectController.findOne(req,res) )
-  .put( (req,res)=>objectController.update(req,res) )
-  .delete( (req,res)=>objectController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>objectController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>objectController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>objectController.delete(req,res) );
 //------------------------------------------------
 router.route('/parameters')
-  .get( (req,res)=>parameterController.select(req,res) )
-  .post( (req,res)=>parameterController.create(req,res) );
+  .get(authorize_cookie,(req,res)=>parameterController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>parameterController.create(req,res) );
 
 router.route('/parameters/:id')
-  .get( (req,res)=>parameterController.findOne(req,res) )
-  .put( (req,res)=>parameterController.update(req,res) )
-  .delete( (req,res)=>parameterController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>parameterController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>parameterController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>parameterController.delete(req,res) );
 //------------------------------------------------
 router.route('/values')
-  .get( (req,res)=>valueController.select(req,res) )
-  .post( (req,res)=>valueController.create(req,res) );
+  .get(authorize_cookie, (req,res)=>valueController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>valueController.create(req,res) );
 
 router.route('/values/:id')
-  .get( (req,res)=>valueController.findOne(req,res) )
-  .put( (req,res)=>valueController.update(req,res) )
-  .delete( (req,res)=>valueController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>valueController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>valueController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>valueController.delete(req,res) );
 //-------------------------------------------------------------------------------
   
 router.route('/user-profiles')
-  .get( (req,res)=>profilesController.select(req,res) )
-  .post( (req,res)=>profilesController.create(req,res) );
+  .get(authorize_cookie, (req,res)=>profilesController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>profilesController.create(req,res) );
   
 router.route('/user-profiles/:id')
-  .get( (req,res)=>profilesController.findOne(req,res) )
-  .put( (req,res)=>profilesController.update(req,res) )
-  .delete( (req,res)=>profilesController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>profilesController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>profilesController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>profilesController.delete(req,res) );
 
 router.route('/user-profiles-fill-select')
-  .get( (req,res)=>profilesController.fill_select(req,res) )
+  .get(authorize_cookie, (req,res)=>profilesController.fill_select(req,res) )
 
 //------------------------------------------------------------------------------
 router.route('/user-roles')
-  .get( (req,res)=>rolesController.select(req,res) )
-  .post( (req,res)=>rolesController.create(req,res) );  
+  .get(authorize_cookie, (req,res)=>rolesController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>rolesController.create(req,res) );  
 router.route('/user-roles/:id')
-  .get( (req,res)=>rolesController.findOne(req,res) )
-  .put( (req,res)=>rolesController.update(req,res) )
-  .delete( (req,res)=>rolesController.delete(req,res) );  
+  .get(authorize_cookie, (req,res)=>rolesController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>rolesController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>rolesController.delete(req,res) );  
 
 router.route('/user-roles-fill-select')
-  .get( (req,res)=>rolesController.fill_select(req,res) )
+  .get(authorize_cookie, (req,res)=>rolesController.fill_select(req,res) )
 
 //------------------------------------------------
 router.route('/nsi')
-  .get( (req,res)=>nsiController.select(req,res) )
-  .post( (req,res)=>nsiController.create(req,res) );
+  .get(authorize_cookie, (req,res)=>nsiController.select(req,res) )
+  .post(authorize_cookie, (req,res)=>nsiController.create(req,res) );
 
 router.route('/nsi/:id')
-  .get( (req,res)=>nsiController.findOne(req,res) )
-  .put( (req,res)=>nsiController.update(req,res) )
-  .delete( (req,res)=>nsiController.delete(req,res) );
+  .get(authorize_cookie, (req,res)=>nsiController.findOne(req,res) )
+  .put(authorize_cookie, (req,res)=>nsiController.update(req,res) )
+  .delete(authorize_cookie, (req,res)=>nsiController.delete(req,res) );
 //-------------------------------------------------------------------------------
 
 
