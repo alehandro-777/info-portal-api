@@ -12,7 +12,7 @@ const profilesController = require('../controllers/user-profiles')
 
 const passwordController = require('../controllers/password')
 const seasonController = require('../controllers/season')
-
+const seasonInjController = require('../controllers/season-inject')
 const nsiController = require('../controllers/nsi')
 
 const router = express.Router()
@@ -70,6 +70,7 @@ router.route('/dataset/:id').get(authorize_cookie, chartsController.set );
 router.route('/charts').get(authorize_cookie, chartsController.chart );
 router.route('/temperatures').get(authorize_cookie, chartsController.temperatures );
 router.route('/table').get( authorize_cookie, chartsController.table );
+router.route('/stats').get( authorize_cookie, chartsController.stats );
 
 router.route('/actgas').get(authorize_cookie, chartsController.actgas ); //???? temp temp
 
@@ -80,11 +81,12 @@ router.route('/seasons').get(authorize_cookie, seasonController.find );
 router.route('/seasons/:id').get(authorize_cookie, seasonController.findById );
 router.route('/seasons/:id/stat').get(authorize_cookie, seasonController.statistics );
 
-
+router.route('/seasons-inject').get( authorize_cookie, seasonInjController.find );
+router.route('/seasons-inject/:id').get( authorize_cookie, seasonInjController.findById );
 
 
 //------------------------------------------------
-router.route('/users/:id/password').post( (req,res)=> passwordController.setUserPass(req,res) );
+router.route('/users/:id/password').post(authorize_cookie, (req,res)=> passwordController.setUserPass(req,res) );
 
 
 router.route('/users')
