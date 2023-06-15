@@ -15,6 +15,8 @@ const seasonController = require('../controllers/season')
 const seasonInjController = require('../controllers/season-inject')
 const nsiController = require('../controllers/nsi')
 
+const actgasController = require('../controllers/actgas')
+
 const router = express.Router()
 
 function authorize(roles = []) {
@@ -71,6 +73,7 @@ router.route('/charts').get(authorize_cookie, chartsController.chart );
 router.route('/temperatures').get(authorize_cookie, chartsController.temperatures );
 router.route('/table').get( authorize_cookie, chartsController.table );
 router.route('/stats').get( authorize_cookie, chartsController.stats );
+router.route('/actgas-seasons').get( authorize_cookie, actgasController.stats );
 
 router.route('/actgas').get(authorize_cookie, chartsController.actgas ); //???? temp temp
 

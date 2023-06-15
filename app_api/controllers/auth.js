@@ -51,7 +51,7 @@ module.exports.loginCookies = async function (req, res) {
     
     console.log(usr)
 
-
+/*
     //local or domain user
     if (usr.is_domain) {
         //domain authentificaton
@@ -70,7 +70,7 @@ module.exports.loginCookies = async function (req, res) {
         let res = await crypto.isValidPassAsync(hash.password, req.body.password);
         if (!res) return res.status(403).json({ message: "Wrong Password!"});
     }
-
+*/
 
     
     const payload = createPayload(usr);

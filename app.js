@@ -33,10 +33,9 @@ app.use(function(req, res, next) {
   );
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE")
-  //res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-  //res.header("Access-Control-Allow-Origin", "http://10.3.1.32:4200");
-  var allowedDomains = ['http://localhost:4200','http://10.3.1.32:4200' ];
-  var origin = req.headers.origin;
+
+  const allowedDomains = ['http://localhost:4200','http://10.3.1.32:4200' ];
+  let origin = req.headers.origin;
   if(allowedDomains.indexOf(origin) > -1){
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
